@@ -13,7 +13,12 @@ type HubJson = {
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ request }) {
-	const hubFile = 'hub.json'
+	let hubFile
+	if (path.basename(process.cwd()) === 'build') {
+		hubFile = '../hub.json'
+	} else {
+		hubFile = './hub.json'
+	}
 	const hubJson: HubJson = JSON.parse(await fs.readFile(hubFile, 'utf-8'))
 
 	let allMatches: {
