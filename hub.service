@@ -5,7 +5,8 @@ ConditionPathIsDirectory=%h/Docs/Programming/Repositories/default/hub
 [Service]
 Type=exec
 WorkingDirectory=%h/Docs/Programming/Repositories/default/hub/build
-ExecStart=/usr/bin/env PATH="%h/.local/state/woof/tools/core/nodejs/v20.4.0/bin:$PATH" node index.js
+; ExecSearchPath=%h/.local/state/woof/tools/core/nodejs/v20.4.0/bin # Systemd 250
+ExecStart=%h/.local/state/woof/tools/core/nodejs/v20.4.0/bin/node index.js
 Environment=PORT=49501
 Restart=on-failure
 

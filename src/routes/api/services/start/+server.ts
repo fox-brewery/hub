@@ -11,7 +11,7 @@ export async function POST({ request }) {
 
 	if (name === 'Mgr') {
 		await exec(
-			`systemd-run --user --collect --setenv=PATH="/home/edwin/.local/state/woof/tools/core/nodejs/v20.4.0/bin:$PATH" --working-directory="/storage/ur/storage_home/Docs/Programming/Repositories/mgr/mgr" --unit 'Mgr' pnpm start`
+			`systemd-run --user --collect --setenv=PATH="/home/edwin/.local/state/woof/tools/core/nodejs/v20.4.0/bin:$PATH" --working-directory="/storage/ur/storage_home/Docs/Programming/Repositories/mgr/mgr" --unit 'Mgr' /home/edwin/.local/state/woof/tools/core/nodejs/v20.4.0/bin/pnpm start`
 		);
 	}
 

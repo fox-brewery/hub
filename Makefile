@@ -1,6 +1,12 @@
+.PHONY: build
+build:
+	pnpm build
+
 .PHONY: install
 install:
 	cp -f ./hub.service ~/.local/share/systemd/user/hub.service
+	systemctl --user daemon-reload
+	systemctl --user restart hub
 
 .PHONY: root-install
 root-install:
