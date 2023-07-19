@@ -17,8 +17,8 @@
 			link: '/passwords'
 		},
 		{
-			title: 'Repositories',
-			link: '/repositories'
+			title: 'Projects',
+			link: '/projects'
 		},
 		{
 			title: 'VSCode Profiles',

@@ -1,3 +1,9 @@
+.PHONY: all
+all:
+	make build
+	make install
+	sudo make root-install
+
 .PHONY: build
 build:
 	pnpm build

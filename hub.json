@@ -1,0 +1,29 @@
+{
+	"repositoryRoot": "/home/edwin/Docs/Programming/",
+	"repositoryDirectories": [
+		{
+			"dir": "AndroidStudioProjects/*",
+			"tags": ["android"]
+		},
+		{
+			"dir": "Challenges/*",
+			"tags": ["challenge"]
+		},
+		{
+			"dir": "Experiments/*/*",
+			"tags": ["experiment"]
+		},
+		{
+			"dir": "Projects/*",
+			"tags": ["project"]
+		},
+		{
+			"dir": "Repositories/*/*",
+			"tags": ["repository"]
+		},
+		{
+			"dir": "Workspaces/*",
+			"tags": ["workspace"]
+		}
+	]
+}

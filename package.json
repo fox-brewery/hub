@@ -44,6 +44,7 @@
 		"@codemirror/state": "^6.2.1",
 		"@codemirror/view": "^6.15.3",
 		"codemirror": "^6.0.1",
+		"glob": "^10.3.3",
 		"lodash": "^4.17.21"
 	}
 }
