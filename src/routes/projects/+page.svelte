@@ -1,25 +1,84 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
+	import {
+		createColumnHelper,
+		createSvelteTable,
+		flexRender,
+		getCoreRowModel,
+	} from '@tanstack/svelte-table'
+	import type { ColumnDef, TableOptions } from '@tanstack/svelte-table'
+	import { writable } from 'svelte/store'
+	import OpenButton from '../../components/OpenButton.svelte'
+	// export let data
 
 	let search = ''
-	let projects: {
+	type Project = {
 		dir: string
 		name: string
 		tags: string[]
-	}[] = []
+		isGitDir: boolean
+	}
+	let backupProjects: Project[] = []
+	let actualProjects: Project[] = []
+	async function changedSearch() {
+		const response = await fetch('/api/projects/list', {
+			method: 'POST',
+		})
+		const body = await response.json()
+		backupProjects = Array.from(body.matches)
+		if (search) {
+			actualProjects = backupProjects.filter((project) => {
+				return project.name.includes(search)
+			})
+		} else {
+			actualProjects = backupProjects
+		}
+		rerender()
+	}
+
+	let table
+	let defaultColumns: ColumnDef<Project>[]
+	let options
 	onMount(async () => {
 		const response = await fetch('/api/projects/list', {
 			method: 'POST',
 		})
 		const body = await response.json()
-		projects = body.matches
-	})
+		backupProjects = Array.from(body.matches)
+		actualProjects = body.matches
+		let defaultData = actualProjects
 
-	async function openProject(dirpath: string) {
-		await fetch('/api/projects/open', {
-			method: 'POST',
-			body: JSON.stringify({ path: dirpath }),
+		const columnHelper = createColumnHelper<Project>()
+		defaultColumns = [
+			columnHelper.accessor('name', {
+				header: () => 'Name',
+				cell: (info) => info.getValue(),
+				footer: (info) => 'Name',
+			}),
+			columnHelper.accessor('isGitDir', {
+				header: () => 'Git Directory',
+				cell: (info) => info.getValue(),
+				footer: (info) => 'Git Directory',
+			}),
+			columnHelper.display({
+				id: 'open',
+				cell: (info) => flexRender(OpenButton, { dir: info.row.original.dir }),
+			}),
+		]
+
+		options = writable<TableOptions<Project>>({
+			data: defaultData,
+			columns: defaultColumns,
+			getCoreRowModel: getCoreRowModel(),
 		})
+
+		table = createSvelteTable(options)
+	})
+	const rerender = () => {
+		options.update((options) => ({
+			...options,
+			data: actualProjects,
+		}))
 	}
 </script>
 
@@ -28,31 +87,59 @@
 	<label class="label" for="search">
 		<span class="label-text">Search filter</span>
 	</label>
-	<input class="input input-bordered input-accent" id="search" bind:value={search} />
+	<input
+		class="input input-bordered input-accent"
+		id="search"
+		on:input={changedSearch}
+		bind:value={search}
+	/>
 </div>
 
-<table class="table table-zebra">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Open</th>
-		</tr>
-	</thead>
-	<tbody>
-		{#each projects as project}
-			{#if project.dir.toLowerCase().includes(search) || project.tags.some((tag) => tag
-						.toLowerCase()
-						.includes(search))}
+<button on:click={() => rerender()} class="border p-2"> Rerender </button>
+{#if table}
+	<table class="table table-zebra">
+		<thead>
+			{#each $table.getHeaderGroups() as headerGroup}
 				<tr>
-					<th class="text-lg">{project.name}</th>
-					<td
-						><button
-							class="btn btn-primary btn-sm active:scale-105"
-							on:click={openProject(project.dir)}>Open</button
-						></td
-					>
+					{#each headerGroup.headers as header}
+						<th>
+							{#if !header.isPlaceholder}
+								<svelte:component
+									this={flexRender(header.column.columnDef.header, header.getContext())}
+								/>
+							{/if}
+						</th>
+					{/each}
 				</tr>
-			{/if}
-		{/each}
-	</tbody>
-</table>
+			{/each}
+		</thead>
+		<tbody>
+			{#each $table.getRowModel().rows as row}
+				<tr>
+					{#each row.getVisibleCells() as cell}
+						<td>
+							<svelte:component
+								this={flexRender(cell.column.columnDef.cell, cell.getContext())}
+							/>
+						</td>
+					{/each}
+				</tr>
+			{/each}
+		</tbody>
+		<tfoot>
+			{#each $table.getFooterGroups() as footerGroup}
+				<tr>
+					{#each footerGroup.headers as header}
+						<th>
+							{#if !header.isPlaceholder}
+								<svelte:component
+									this={flexRender(header.column.columnDef.footer, header.getContext())}
+								/>
+							{/if}
+						</th>
+					{/each}
+				</tr>
+			{/each}
+		</tfoot>
+	</table>
+{/if}
