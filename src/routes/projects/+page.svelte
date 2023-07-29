@@ -9,6 +9,8 @@
 	import type { ColumnDef, TableOptions } from '@tanstack/svelte-table'
 	import { writable } from 'svelte/store'
 	import OpenButton from '../../components/OpenButton.svelte'
+	import TrueFalse from '../../components/TrueFalse.svelte'
+
 	// export let data
 
 	let search = ''
@@ -16,6 +18,7 @@
 		dir: string
 		name: string
 		tags: string[]
+		hasFoxxoConfig: boolean
 		isGitDir: boolean
 	}
 	let backupProjects: Project[] = []
@@ -55,9 +58,20 @@
 				cell: (info) => info.getValue(),
 				footer: (info) => 'Name',
 			}),
+			columnHelper.display({
+				id: 'foxxo',
+				header: () => 'Foxxo',
+				cell: (info) => flexRender(TrueFalse, { text: info.row.original.hasFoxxoConfig }),
+				footer: (info) => 'Foxxo',
+			}),
+			columnHelper.accessor('tags', {
+				header: () => 'Tags',
+				cell: (info) => info.getValue(),
+				footer: (info) => 'Tags',
+			}),
 			columnHelper.accessor('isGitDir', {
 				header: () => 'Git Directory',
-				cell: (info) => info.getValue(),
+				cell: (info) => flexRender(TrueFalse, { text: info.row.original.isGitDir }),
 				footer: (info) => 'Git Directory',
 			}),
 			columnHelper.display({

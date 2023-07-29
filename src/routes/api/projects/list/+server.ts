@@ -26,6 +26,7 @@ export async function POST() {
 	const allMatches: {
 		dir: string
 		name: string
+		hasFoxxoConfig: boolean
 		tags: string[]
 		isGitDir: boolean
 	}[] = []
@@ -38,8 +39,14 @@ export async function POST() {
 				.then(() => true)
 				.catch(() => false)
 
+			const hasFoxxoConfig = await fs
+				.stat(path.join(match, 'foxxo.toml'))
+				.then(() => true)
+				.catch(() => false)
+
 			allMatches.push({
 				dir: match,
+				hasFoxxoConfig,
 				name: path.basename(match),
 				tags: dir.tags,
 				isGitDir: hasGitDir,
