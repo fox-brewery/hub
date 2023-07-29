@@ -19,4 +19,5 @@ root-install:
 	cp -f ./Caddyfile /etc/caddy/Caddyfile
 	cp -f ./caddy.service /etc/systemd/system/caddy.service
 	systemctl daemon-reload
-	sudo /home/edwin/.bin/caddy reload --config /etc/caddy/Caddyfile
+	sudo systemctl start caddy
+	/home/edwin/.bin/caddy reload --config /etc/caddy/Caddyfile
