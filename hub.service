@@ -1,10 +1,10 @@
 [Unit]
 Description=Hub
-ConditionPathIsDirectory=%h/Docs/Programming/Repositories/default/hub
+ConditionPathIsDirectory=%h/Docs/Programming/Repositories/fox-projects/hub
 
 [Service]
 Type=exec
-WorkingDirectory=%h/Docs/Programming/Repositories/default/hub/build
+WorkingDirectory=%h/Docs/Programming/Repositories/fox-projects/hub/build
 ; ExecSearchPath=%h/.local/state/woof/tools/core/nodejs/v20.4.0/bin # Systemd 250
 ExecStart=%h/.local/state/woof/tools/core/nodejs/v20.4.0/bin/node index.js
 Environment=PORT=49501
