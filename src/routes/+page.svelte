@@ -1,34 +1,26 @@
 <script>
 	const items = [
 		{
-			title: 'Backups',
-			link: '/backups'
-		},
-		{
 			title: 'Keybindings',
-			link: '/keybindings'
+			link: '/keybindings',
 		},
 		{
 			title: 'Notepad',
-			link: '/notepad'
-		},
-		{
-			title: 'Passwords',
-			link: '/passwords'
+			link: '/notepad',
 		},
 		{
 			title: 'Projects',
-			link: '/projects'
+			link: '/projects',
 		},
 		{
 			title: 'VSCode Profiles',
-			link: '/vscode-profiles'
+			link: '/vscode-profiles',
 		},
 		{
 			title: 'Services',
-			link: '/services'
-		}
-	];
+			link: '/services',
+		},
+	]
 </script>
 
 <div class="flex flex-wrap gap-2 m-2">

@@ -1,23 +1,20 @@
-.PHONY: all
 all:
 	make build
 	make install
 	sudo make root-install
+.PHONY: all
 
-.PHONY: build
 build:
 	pnpm build
+.PHONY: build
 
-.PHONY: install
 install:
-	cp -f ./hub.service ~/.local/share/systemd/user/hub.service
+	cp -f ./config/hub.service "$${XDG_DATA_HOME:-"$$HOME/.local/share"}/systemd/user/hub.service"
 	systemctl --user daemon-reload
 	systemctl --user restart hub
+.PHONY: install
 
-.PHONY: root-install
 root-install:
-	cp -f ./Caddyfile /etc/caddy/Caddyfile
-	cp -f ./caddy.service /etc/systemd/system/caddy.service
-	systemctl daemon-reload
-	sudo systemctl start caddy
-	/home/edwin/.bin/caddy reload --config /etc/caddy/Caddyfile
+	sudo cp -f ./config/Caddyfile /etc/caddy/Caddyfile
+	sudo systemctl reload caddy
+.PHONY: root-install

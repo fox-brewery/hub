@@ -16,9 +16,9 @@ export async function POST() {
 	// TODO
 	let hubFile
 	if (path.basename(process.cwd()) === 'build') {
-		hubFile = '../hub.json'
+		hubFile = '../config/hub.json'
 	} else {
-		hubFile = './hub.json'
+		hubFile = './config/hub.json'
 	}
 
 	const hubJson: HubJson = JSON.parse(await fs.readFile(hubFile, 'utf-8'))
