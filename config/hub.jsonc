@@ -1,0 +1,15 @@
+{
+	"repositoryRoot": "/home/edwin/.dotfiles/.home/Documents/Projects/Programming/",
+	"repositoryCategories": [
+		{
+			"category": "GitHub Repositories",
+			"dir": "Repositories/*/*",
+			"level": 2
+		},
+		{
+			"category": "Git",
+			"dir": ["Git/*"],
+			"level": 1
+		}
+	]
+}

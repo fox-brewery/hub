@@ -9,7 +9,7 @@ const exec = util.promisify(child_process.exec)
 
 type HubJson = {
 	repositoryRoot: string
-	repositoryDirectories: {
+	repositoryCategories: {
 		dir: string
 		tags: string[]
 	}[]

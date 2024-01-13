@@ -1,7 +1,15 @@
 export async function load({ fetch }) {
-	const res = await fetch('/api/projects/list')
+	const configFile = await fetch('/api/config/get', {
+		method: 'POST',
+	})
+	const configJson = JSON.parse(await configFile.text())
+
+	// const res = await fetch('/api/projects/list', {
+	// 	method: 'POST'
+	// })
 	// const body = await res.json()
 
-	// this becomes available on the page as `data.posts`
-	return {}
+	return {
+		configJson
+	}
 }

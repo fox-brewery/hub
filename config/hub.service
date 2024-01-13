@@ -1,12 +1,12 @@
 [Unit]
 Description=Hub
-ConditionPathIsDirectory=%h/Docs/Programming/Repositories/fox-projects/hub
+ConditionPathIsDirectory=%h/.dotfiles/.home/Documents/Projects/Programming/Repositories/fox-brewery/hub
 
 [Service]
 Type=exec
-WorkingDirectory=%h/Docs/Programming/Repositories/fox-projects/hub/build
-; ExecSearchPath=%h/.local/state/woof/tools/core/nodejs/v20.4.0/bin # Systemd 250
-ExecStart=%h/.local/state/woof/tools/core/nodejs/v20.4.0/bin/node index.js
+WorkingDirectory=%h/.dotfiles/.home/Documents/Projects/Programming/Repositories/fox-brewery/hub/build
+; ExecSearchPath=%h/.local/state/woof/tools/core/nodejs/v20.4.0/bin # TODO: Systemd 250
+ExecStart=%h/.local/bin/mise exec -- node index.js
 Environment=PORT=49501
 Restart=on-failure
 

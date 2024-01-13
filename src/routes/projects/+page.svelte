@@ -11,13 +11,18 @@
 	import OpenButton from '../../components/OpenButton.svelte'
 	import TrueFalse from '../../components/TrueFalse.svelte'
 
-	// export let data
+	/** @type {import('./$types').PageData} */
+	export let data
 
 	let search = ''
 	type Project = {
 		dir: string
 		name: string
-		tags: string[]
+		category: string
+		project: {
+			hasFoxxoConfig: boolean
+			isGitDir: boolean
+		}
 		hasFoxxoConfig: boolean
 		isGitDir: boolean
 	}
@@ -39,10 +44,19 @@
 		rerender()
 	}
 
+	let activeTab = ''
+	let tabs = []
 	let table
 	let defaultColumns: ColumnDef<Project>[]
 	let options
 	onMount(async () => {
+		tabs = Array.from(
+			new Set(data.configJson.repositoryCategories.map((item) => item.category)).values(),
+		).map((item) => ({
+			name: item,
+		}))
+		activeTab = tabs[0].name
+
 		const response = await fetch('/api/projects/list', {
 			method: 'POST',
 		})
@@ -96,64 +110,90 @@
 	}
 </script>
 
-<h1>Projects</h1>
+<h1 class="text-3xl font-bold">Projects</h1>
 <div class="form-control w-full max-w-xs">
-	<label class="label" for="search">
-		<span class="label-text">Search filter</span>
+	<label class="label">
+		<input
+			class="input input-bordered input-accent"
+			on:input={changedSearch}
+			bind:value={search}
+		/>
+		<span class="label-text ml-1 font-bold">Search</span>
 	</label>
-	<input
-		class="input input-bordered input-accent"
-		id="search"
-		on:input={changedSearch}
-		bind:value={search}
-	/>
 </div>
+<button on:click={() => rerender()} class="mb-1 btn btn-primary"> Rerender </button>
 
-<button on:click={() => rerender()} class="border p-2"> Rerender </button>
-{#if table}
-	<table class="table table-zebra">
-		<thead>
-			{#each $table.getHeaderGroups() as headerGroup}
-				<tr>
-					{#each headerGroup.headers as header}
-						<th>
-							{#if !header.isPlaceholder}
-								<svelte:component
-									this={flexRender(header.column.columnDef.header, header.getContext())}
-								/>
-							{/if}
-						</th>
-					{/each}
-				</tr>
-			{/each}
-		</thead>
-		<tbody>
-			{#each $table.getRowModel().rows as row}
-				<tr>
-					{#each row.getVisibleCells() as cell}
-						<td>
-							<svelte:component
-								this={flexRender(cell.column.columnDef.cell, cell.getContext())}
-							/>
-						</td>
-					{/each}
-				</tr>
-			{/each}
-		</tbody>
-		<tfoot>
-			{#each $table.getFooterGroups() as footerGroup}
-				<tr>
-					{#each footerGroup.headers as header}
-						<th>
-							{#if !header.isPlaceholder}
-								<svelte:component
-									this={flexRender(header.column.columnDef.footer, header.getContext())}
-								/>
-							{/if}
-						</th>
-					{/each}
-				</tr>
-			{/each}
-		</tfoot>
-	</table>
-{/if}
+<div role="tablist" class="tabs tabs-lifted">
+	{#each tabs as tab, i}
+		<input
+			type="radio"
+			name="projects_tabs"
+			role="tab"
+			class="tab"
+			checked
+			class:active-tab={activeTab === tab.name ? 'active-tab' : ''}
+			aria-label={tab.name}
+		/>
+		<div
+			role="tabpanel"
+			tabindex={i}
+			class="tab-content bg-base-100 border-base-300 rounded-box p-6"
+		>
+			{#if table}
+				<table class="table table-zebra">
+					<thead>
+						{#each $table.getHeaderGroups() as headerGroup}
+							<tr>
+								{#each headerGroup.headers as header}
+									<th>
+										{#if !header.isPlaceholder}
+											<svelte:component
+												this={flexRender(
+													header.column.columnDef.header,
+													header.getContext(),
+												)}
+											/>
+										{/if}
+									</th>
+								{/each}
+							</tr>
+						{/each}
+					</thead>
+					<tbody>
+						{#each $table.getRowModel().rows as row}
+							<tr>
+								{#each row.getVisibleCells() as cell}
+									{#if cell.row.original.category === tab.name}
+										<td>
+											<svelte:component
+												this={flexRender(cell.column.columnDef.cell, cell.getContext())}
+											/>
+										</td>
+									{/if}
+								{/each}
+							</tr>
+						{/each}
+					</tbody>
+					<tfoot>
+						{#each $table.getFooterGroups() as footerGroup}
+							<tr>
+								{#each footerGroup.headers as header}
+									<th>
+										{#if !header.isPlaceholder}
+											<svelte:component
+												this={flexRender(
+													header.column.columnDef.footer,
+													header.getContext(),
+												)}
+											/>
+										{/if}
+									</th>
+								{/each}
+							</tr>
+						{/each}
+					</tfoot>
+				</table>
+			{/if}
+		</div>
+	{/each}
+</div>
