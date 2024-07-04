@@ -1,14 +1,14 @@
 [Unit]
 Description=Hub
-ConditionPathIsDirectory=%h/.dotfiles/.home/Documents/Projects/Programming/Repositories/fox-brewery/hub
+ConditionPathIsDirectory=%h/apps/hub/
 
 [Service]
 Type=exec
-WorkingDirectory=%h/.dotfiles/.home/Documents/Projects/Programming/Repositories/fox-brewery/hub/build
+WorkingDirectory=%h/apps/hub/build
 ; ExecSearchPath=%h/.local/state/woof/tools/core/nodejs/v20.4.0/bin # TODO: Systemd 250
 ExecStart=%h/.local/bin/mise exec -- node index.js
 Environment=PORT=49501
 Restart=on-failure
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
