@@ -82,6 +82,7 @@
 	$: extensions, _reconfigureExtensions();
 
 	function _editorTxHandler(tr) {
+		console.log(this)
 		this.update([tr]);
 
 		if (verbose) {
@@ -114,7 +115,7 @@
 			doc: initialDoc,
 			extensions,
 			parent: dom,
-			dispatch: _editorTxHandler
+			dispatch: _editorTxHandler.bind(view)
 		});
 
 		return true;
