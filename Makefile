@@ -13,6 +13,5 @@ install:
 	systemctl --user enable hub
 	systemctl --user restart hub
 	sudo cp -f ./config/Caddyfile /etc/caddy/Caddyfile
-# caddy trust
 	sudo systemctl reload caddy
 .PHONY: install

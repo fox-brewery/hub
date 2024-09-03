@@ -10,3 +10,4 @@ This is a quick new rendition of the same idea - some central place to manage my
 
 - Backups?
 - Passwords?
+- @typescript-eslint/parser and eslint-plugin-svelte

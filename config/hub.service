@@ -1,11 +1,10 @@
 [Unit]
 Description=Hub
-ConditionPathIsDirectory=%h/apps/hub/
+ConditionPathIsDirectory=%h/.dev/repositories/hub/
 
 [Service]
 Type=exec
-WorkingDirectory=%h/apps/hub/build
-; ExecSearchPath=%h/.local/state/woof/tools/core/nodejs/v20.4.0/bin # TODO: Systemd 250
+WorkingDirectory=%h/.dev/repositories/hub/build
 ExecStart=%h/.local/bin/mise exec -- node index.js
 Environment=PORT=49501
 Restart=on-failure
